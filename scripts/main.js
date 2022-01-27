@@ -2,9 +2,12 @@ window.addEventListener('DOMContentLoaded', function() {
     // Execute after page load
     const deal = document.querySelector('#deal-button');
     deal.addEventListener('click', dealCards);
-  
+
     const hit = document.querySelector('#hit-button');
     hit.addEventListener('click', hitMe);
+
+    const stand = document.querySelector('#stand-button');
+    stand.addEventListener('click', iStand);
   })
   
   let suit = ['diamonds', 'clubs', 'hearts', 'spades'];
@@ -14,6 +17,9 @@ window.addEventListener('DOMContentLoaded', function() {
   let playerHand = new Array();
   let playerPoint = 0;
   let dealerPoint = 0;
+  let message = "";
+
+
   
   //Render Cards and Points
   function render(Array){
@@ -67,6 +73,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     render(playerHand);
     render(dealerHand);
+    document.querySelector('#deal-button').disabled = true;
   }
   
   //Deals Hit Cards
@@ -98,6 +105,20 @@ window.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#player-points').textContent = playerPoint;
     }
   }
+
+  //Player Stands
+  function iStand(event){
+    let dealer = document.querySelector('#dealer-hand');
+
+    if(dealerPoint < 17){
+      let dealerHitCard = deck.pop();
+      let newDealerCard = getCardImage(dealerHitCard);
+      dealerHand.push(dealerHitCard);
+      dealerPoint = calculatePoints(dealerHand);
+      dealer.append(newDealerCard);
+      document.querySelector('#dealer-points').textContent = dealerPoint;
+    }
+  }
   
   //Shuffle Cards
   function shuffleDeck(deck) {
@@ -111,6 +132,38 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     return deck;
   }
+
+  //Check for Busts
+  function gameOver(){
+   
+    if(dealerPoint >= 17 && playerPoint >= 17){
+      console.log("here")
+      if(dealerPoint > playerPoint){
+        message = "Dealer Wins!";
+      } 
+      else if(playerPoint > dealerPoint){
+        message = "Player Wins!";
+      } 
+      else if(playerPoint == dealerPoint) {
+        message = "Draw!";
+      }
+    }
+    
+    if(playerPoint > 21 || dealerPoint >21){
+      if(playerPoint > 21 && dealerPoint > 21){
+        message = "Player and Dealer Bust";
+      }
+      else if (playerPoint > 21){
+        message = "Player Bust! You Lose!";
+      } 
+      else if (dealerPoint > 21){
+        message = "Dealer Bust! You Win!";
+      }
+    }
+
+    document.querySelector('#messages').textContent = message;
+}
+    
   
   //Calculates Points
   function calculatePoints(Array) {
@@ -125,7 +178,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         playerPoint += points;
       }
-      console.log('Player Points: ' + playerPoint);
+      gameOver();
       return playerPoint;
     }else {
       dealerPoint = 0;
@@ -137,7 +190,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         dealerPoint += points;
       }
-      console.log('Dealer Points: ' + dealerPoint);    
+      gameOver();
       return dealerPoint;
     }
   }
@@ -160,5 +213,4 @@ window.addEventListener('DOMContentLoaded', function() {
     const image = document.createElement('img');
     image.src = `/images/${rank}_of_${card.suit}.png`;
     return image;
-  }
-  
+  } 

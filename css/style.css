@@ -13,7 +13,7 @@ body * {
   margin: 0 auto 10px;
   height: 1em;
   font-size: 18px;
-  color: darkolivegreen;
+  color: fuchsia;
 }
 
 .message-box.error {

@@ -2,36 +2,11 @@ window.addEventListener('DOMContentLoaded', function() {
     // Execute after page load
     const deal = document.querySelector('#deal-button');
     deal.addEventListener('click', dealCards);
-    // deal.addEventListener('click', deal);
   
     const hit = document.querySelector('#hit-button');
     hit.addEventListener('click', hitDealer);
     hit.addEventListener('click', hitPlayer);
   })
-  
-  // function dealDealer(event){
-  //   dealerHand = new Array();
-  
-  //   for(let i = 0; i < 2; i++){
-  //     let card = deck.pop();
-  //     let newCard = getCardImage(card);
-  //     document.querySelector('#dealer-hand').appendChild(newCard);
-  //     dealerHand.push(card);
-  //   }
-  // }
-  
-  // function dealPlayer(event){
-  //   playerHand = new Array();
-  
-  //   for(let i = 0; i < 2; i++){
-  //     let card = deck.pop();
-  //     let newCard = getCardImage(card);
-  //     document.querySelector('#player-hand').appendChild(newCard);
-  //     playerHand.push(card);
-  
-  //   }
-  //   console.log(playerHand);
-  // }
   
   let suit = ['diamonds', 'clubs', 'hearts', 'spades'];
   let rank = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
@@ -95,38 +70,36 @@ window.addEventListener('DOMContentLoaded', function() {
     return deck;
   }
   
-  function calculatePoints(playerHand) {
+  function calculatePoints(Array) {
   
     let playerPoint = 0;
-  
-    for(i = 0; i < 2; i++){
-      let playerCard = playerHand[i];
-      let points = parseInt(playerCard.rank);
-      if(points > 10){
-        points = 10;
-      }
-      playerPoint += points;
-    }
-  
-    console.log('Player Points: ' + playerPoint);
-  }
-  
-  function calculatePoints(dealerHand) {
-  
     let dealerPoint = 0;
-    console.log(dealerHand);
-  
-    for(i = 0; i < 2; i++){
-      let dealerCard = dealerHand[i];
-      let points = parseInt(dealerCard.rank);
-      if(points > 10){
-        points = 10;
+
+    if(Array == playerHand){
+      for(i = 0; i < 2; i++){
+        let playerCard = playerHand[i];
+        let points = parseInt(playerCard.rank);
+        if(points > 10){
+          points = 10;
+        }
+        playerPoint += points;
       }
-      dealerPoint += points;
+    
+      console.log('Player Points: ' + playerPoint);
+    }else{
+      for(i = 0; i < 2; i++){
+        let dealerCard = dealerHand[i];
+        let points = parseInt(dealerCard.rank);
+        if(points > 10){
+          points = 10;
+        }
+        dealerPoint += points;
+      }
+    
+      console.log('Dealer Points: ' + dealerPoint);    
     }
-  
-    console.log('Dealer Points: ' + dealerPoint);
   }
+  
   
   function getCardImage(card){
     let rank = card.rank;

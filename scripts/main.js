@@ -8,6 +8,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
     const stand = document.querySelector('#stand-button');
     stand.addEventListener('click', iStand);
+
+    const playAgain = document.querySelector('#playAgain-button');
+    playAgain.addEventListener('click', restart);
+    playAgain.disabled = true;
   })
   
   let suit = ['diamonds', 'clubs', 'hearts', 'spades'];
@@ -147,21 +151,42 @@ window.addEventListener('DOMContentLoaded', function() {
       else if(playerPoint == dealerPoint) {
         message = "Draw!";
       }
-    }
-    
-    if(playerPoint > 21 || dealerPoint >21){
-      if(playerPoint > 21 && dealerPoint > 21){
-        message = "Player and Dealer Bust";
+      if(playerPoint > 21 || dealerPoint > 21){
+        if(playerPoint > 21 && dealerPoint > 21){
+          message = "Player and Dealer Bust";
+        }
+        else if (playerPoint > 21){
+          message = "Player Bust! You Lose!";
+        } 
+        else {
+          message = "Dealer Bust! You Win!";
+        }
       }
-      else if (playerPoint > 21){
-        message = "Player Bust! You Lose!";
-      } 
-      else if (dealerPoint > 21){
-        message = "Dealer Bust! You Win!";
-      }
+      document.querySelector('#hit-button').disabled = true;
+      document.querySelector('#stand-button').disabled = true;
+      document.querySelector('#messages').textContent = message;
+      document.querySelector('#playAgain-button').disabled = false;
     }
+}
 
-    document.querySelector('#messages').textContent = message;
+function restart(){
+  let player = document.querySelector('#player-hand');
+  let dealer = document.querySelector('#dealer-hand');
+
+  playerHand = [];
+  playerPoint = 0;
+  dealerHand = [];
+  dealerPoint = 0;
+  message = "";
+
+  document.querySelector('#messages').textContent = message;
+  player.textContent = '';
+  dealer.textContent = '';
+
+  document.querySelector('#hit-button').disabled = false;
+  document.querySelector('#stand-button').disabled = false;
+  document.querySelector('#playAgain-button').disabled = true;
+  dealCards();
 }
     
   

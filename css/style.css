@@ -13,7 +13,8 @@ body * {
   margin: 0 auto 10px;
   height: 1em;
   font-size: 18px;
-  color: fuchsia;
+  text-align: center;
+  color: red;
 }
 
 .message-box.error {
@@ -95,4 +96,8 @@ button[type="reset"] {
 button[type="reset"]:hover {
   background: maroon;
   box-shadow: 0px 0px 10px 5px maroon;
+}
+
+button[type="reset"][disabled] {
+  visibility: hidden;
 }

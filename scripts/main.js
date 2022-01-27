@@ -140,30 +140,32 @@ function shuffleDeck(deck) {
 //End Game
 function gameOver(){
   
-  if(dealerPoint >= 17 && playerPoint >= 17){
-    if(dealerPoint > playerPoint){
-      message = "Dealer Wins!";
-    } 
-    else if(playerPoint > dealerPoint){
-      message = "Player Wins!";
-    } 
-    else if(playerPoint == dealerPoint) {
-      message = "Draw!";
-    }
-    if(playerPoint > 21 || dealerPoint > 21){
-      if(playerPoint > 21 && dealerPoint > 21){
-        message = "Player and Dealer Bust";
-      }
-      else if (playerPoint > 21){
-        message = "Player Bust! You Lose!";
+  if(dealerPoint >= 17 || playerPoint >= 17){
+    if(dealerPoint >= 17 && playerPoint >= 17){
+      if(dealerPoint > playerPoint){
+        message = "Dealer Wins!";
       } 
-      else {
-        message = "Dealer Bust! You Win!";
+      else if(playerPoint > dealerPoint){
+        message = "Player Wins!";
+      } 
+      else if(playerPoint == dealerPoint) {
+        message = "Draw!";
       }
+      if(playerPoint > 21 || dealerPoint > 21){
+        if(playerPoint > 21 && dealerPoint > 21){
+          message = "Player and Dealer Bust";
+        }
+        else if (playerPoint > 21){
+          message = "Player Bust! You Lose!";
+        } 
+        else {
+          message = "Dealer Bust! You Win!";
+        }
+      }
+      document.querySelector('#hit-button').disabled = true;
+      document.querySelector('#stand-button').disabled = true;
+      document.querySelector('#playAgain-button').disabled = false;
     }
-    document.querySelector('#hit-button').disabled = true;
-    document.querySelector('#stand-button').disabled = true;
-    document.querySelector('#playAgain-button').disabled = false;
   }
   document.querySelector('#messages').textContent = message;
 }

@@ -151,20 +151,23 @@ function gameOver(){
       else if(playerPoint == dealerPoint) {
         message = "Draw!";
       }
-      if(playerPoint > 21 || dealerPoint > 21){
-        if(playerPoint > 21 && dealerPoint > 21){
-          message = "Player and Dealer Bust";
-        }
-        else if (playerPoint > 21){
-          message = "Player Bust! You Lose!";
-        } 
-        else {
-          message = "Dealer Bust! You Win!";
-        }
-      }
+      document.querySelector('#playAgain-button').disabled = false;
       document.querySelector('#hit-button').disabled = true;
       document.querySelector('#stand-button').disabled = true;
+    }
+    if(playerPoint > 21 || dealerPoint > 21){
+      if(playerPoint > 21 && dealerPoint > 21){
+        message = "Player and Dealer Bust";
+      }
+      else if (playerPoint > 21){
+        message = "Player Bust! You Lose!";
+      } 
+      else {
+        message = "Dealer Bust! You Win!";
+      }
       document.querySelector('#playAgain-button').disabled = false;
+      document.querySelector('#hit-button').disabled = true;
+      document.querySelector('#stand-button').disabled = true;
     }
   }
   document.querySelector('#messages').textContent = message;

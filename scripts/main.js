@@ -26,10 +26,8 @@ window.addEventListener('DOMContentLoaded', function() {
         dealerHand.push(card);
       }
     }
-    render(dealerHand);
     render(playerHand);
-    playerPoints = calculatePoints(playerHand);
-    dealerPoints = calculatePoints(dealerHand);
+    render(dealerHand);
   }
   
   function hitDealer(event){
@@ -84,8 +82,8 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         playerPoint += points;
       }
-    
       console.log('Player Points: ' + playerPoint);
+      return playerPoint;
     }else{
       for(i = 0; i < 2; i++){
         let dealerCard = dealerHand[i];
@@ -95,8 +93,8 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         dealerPoint += points;
       }
-    
       console.log('Dealer Points: ' + dealerPoint);    
+      return dealerPoint;
     }
   }
   
@@ -116,7 +114,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   
     const image = document.createElement('img');
-    image.src = '/images/' + rank + '_of_' + card.suit + '.png';
+    image.src = `/images/${rank}_of_${card.suit}.png`;
     return image;
   }
   
@@ -130,13 +128,19 @@ window.addEventListener('DOMContentLoaded', function() {
         let newCard = getCardImage(card);
         player.appendChild(newCard);
       }
+      playerPoint = calculatePoints(playerHand);
+      document.querySelector('#player-points').append(playerPoint);
     } else {
       for(let j = 0; j < dealerHand.length; j++){
         let card = dealerHand[j];
         let newCard = getCardImage(card);
         dealer.appendChild(newCard); 
      }
+      dealerPoint = calculatePoints(dealerHand);
+      document.querySelector('#dealer-points').append(dealerPoint);
     }
+
+
   }
   
   

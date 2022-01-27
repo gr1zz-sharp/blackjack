@@ -4,8 +4,7 @@ window.addEventListener('DOMContentLoaded', function() {
     deal.addEventListener('click', dealCards);
   
     const hit = document.querySelector('#hit-button');
-    hit.addEventListener('click', hitDealer);
-    hit.addEventListener('click', hitPlayer);
+    hit.addEventListener('click', hitMe);
   })
   
   let suit = ['diamonds', 'clubs', 'hearts', 'spades'];
@@ -13,8 +12,48 @@ window.addEventListener('DOMContentLoaded', function() {
   let deck = new Array();
   let dealerHand = new Array();
   let playerHand = new Array();
+  let playerPoint = 0;
+  let dealerPoint = 0;
   
+  //Render Cards and Points
+  function render(Array){
+    let player = document.querySelector('#player-hand');
+    let dealer = document.querySelector('#dealer-hand');
+  
+    if(Array == playerHand){
+      for(let i = 0; i < playerHand.length; i++){
+        let card = playerHand[i];
+        let newCard = getCardImage(card);
+        player.append(newCard);
+      }
+      playerPoint = calculatePoints(playerHand);
+      document.querySelector('#player-points').textContent = playerPoint;
+    } else {
+      for(let j = 0; j < dealerHand.length; j++){
+        let card = dealerHand[j];
+        let newCard = getCardImage(card);
+        dealer.append(newCard); 
+     }
+      dealerPoint = calculatePoints(dealerHand);
+      document.querySelector('#dealer-points').textContent = dealerPoint;
+    }
+  }
+
+  //Builds Deck
+  function buildDeck() {
+    deck = new Array();
+    for (let i = 0; i < rank.length; i++){
+      for (let j = 0; j < suit.length; j++){
+        let card = { rank: rank[i], suit: suit[j]};
+        deck.push(card);
+      }
+    }
+    deck = shuffleDeck(deck);
+  }
+
+  //Deals Cards
   function dealCards(event){
+    buildDeck();
     playerHand = new Array();
     dealerHand = new Array();
   
@@ -30,32 +69,37 @@ window.addEventListener('DOMContentLoaded', function() {
     render(dealerHand);
   }
   
-  function hitDealer(event){
-    const image = document.createElement('img');
-    image.src = '/images/2_of_clubs.png';
-  
-    document.querySelector('#dealer-hand').appendChild(image);
-  }
-  
-  function hitPlayer(event){
-    const image = document.createElement('img');
-    image.src = '/images/2_of_clubs.png';
-  
-    document.querySelector('#player-hand').appendChild(image);
-  }
-  
-  
-  function buildDeck() {
-    deck = new Array();
-    for (let i = 0; i < rank.length; i++){
-      for (let j = 0; j < suit.length; j++){
-        let card = { rank: rank[i], suit: suit[j]};
-        deck.push(card);
-      }
+  //Deals Hit Cards
+  function hitMe(event){
+    let player = document.querySelector('#player-hand');
+    let dealer = document.querySelector('#dealer-hand');
+
+    if(dealerPoint < 17){
+      let playerHitCard = deck.pop();
+      let newPlayerCard = getCardImage(playerHitCard);
+      playerHand.push(playerHitCard);
+      playerPoint = calculatePoints(playerHand);
+      player.append(newPlayerCard);
+      document.querySelector('#player-points').textContent = playerPoint;
+
+      let dealerHitCard = deck.pop();
+      let newDealerCard = getCardImage(dealerHitCard);
+      dealerHand.push(dealerHitCard);
+      dealerPoint = calculatePoints(dealerHand);
+      dealer.append(newDealerCard);
+      document.querySelector('#dealer-points').textContent = dealerPoint;
+
+    } else {
+      let playerHitCard = deck.pop();
+      let newPlayerCard = getCardImage(playerHitCard);
+      playerHand.push(playerHitCard);
+      playerPoint = calculatePoints(playerHand)
+      player.append(newPlayerCard);
+      document.querySelector('#player-points').textContent = playerPoint;
     }
-    deck = shuffleDeck(deck);
   }
   
+  //Shuffle Cards
   function shuffleDeck(deck) {
     let currentIndex = deck.length, randomIndex;
   
@@ -68,13 +112,12 @@ window.addEventListener('DOMContentLoaded', function() {
     return deck;
   }
   
+  //Calculates Points
   function calculatePoints(Array) {
-  
-    let playerPoint = 0;
-    let dealerPoint = 0;
 
     if(Array == playerHand){
-      for(i = 0; i < 2; i++){
+      playerPoint = 0;
+      for(i = 0; i < playerHand.length; i++){
         let playerCard = playerHand[i];
         let points = parseInt(playerCard.rank);
         if(points > 10){
@@ -84,8 +127,9 @@ window.addEventListener('DOMContentLoaded', function() {
       }
       console.log('Player Points: ' + playerPoint);
       return playerPoint;
-    }else{
-      for(i = 0; i < 2; i++){
+    }else {
+      dealerPoint = 0;
+      for(i = 0; i < dealerHand.length; i++){
         let dealerCard = dealerHand[i];
         let points = parseInt(dealerCard.rank);
         if(points > 10){
@@ -98,7 +142,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  
+  //Assigns Card Images
   function getCardImage(card){
     let rank = card.rank;
   
@@ -118,31 +162,3 @@ window.addEventListener('DOMContentLoaded', function() {
     return image;
   }
   
-  function render(Array){
-    let player = document.querySelector('#player-hand');
-    let dealer = document.querySelector('#dealer-hand');
-  
-    if(Array == playerHand){
-      for(let i = 0; i < playerHand.length; i++){
-        let card = playerHand[i];
-        let newCard = getCardImage(card);
-        player.appendChild(newCard);
-      }
-      playerPoint = calculatePoints(playerHand);
-      document.querySelector('#player-points').append(playerPoint);
-    } else {
-      for(let j = 0; j < dealerHand.length; j++){
-        let card = dealerHand[j];
-        let newCard = getCardImage(card);
-        dealer.appendChild(newCard); 
-     }
-      dealerPoint = calculatePoints(dealerHand);
-      document.querySelector('#dealer-points').append(dealerPoint);
-    }
-
-
-  }
-  
-  
-  buildDeck();
-  console.log(deck);

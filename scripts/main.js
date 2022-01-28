@@ -23,7 +23,81 @@ let playerPoint = 0;
 let dealerPoint = 0;
 let message = "";
 
+//Deals Cards
+function dealCards(event){
+  buildDeck();
+  playerHand = new Array();
+  dealerHand = new Array();
+  
+  for (let i = 0; i < 2; i++){
+    let card = deck.pop();
+    playerHand.push(card);
+    for (let j = 0; j < 1; j++){
+      let card = deck.pop();
+      dealerHand.push(card);
+    }
+  }
+  render(playerHand);
+  render(dealerHand);
+  document.querySelector('#deal-button').disabled = true;
+}
 
+//Deals Hit Cards
+function hitMe(event){
+  let player = document.querySelector('#player-hand');
+  let dealer = document.querySelector('#dealer-hand');
+  
+  if(dealerPoint < 17){
+    let playerHitCard = deck.pop();
+    let newPlayerCard = getCardImage(playerHitCard);
+    playerHand.push(playerHitCard);
+    playerPoint = calculatePoints(playerHand);
+    player.append(newPlayerCard);
+    document.querySelector('#player-points').textContent = playerPoint;
+    
+    let dealerHitCard = deck.pop();
+    let newDealerCard = getCardImage(dealerHitCard);
+    dealerHand.push(dealerHitCard);
+    dealerPoint = calculatePoints(dealerHand);
+    dealer.append(newDealerCard);
+    document.querySelector('#dealer-points').textContent = dealerPoint;
+    
+  } else {
+    let playerHitCard = deck.pop();
+    let newPlayerCard = getCardImage(playerHitCard);
+    playerHand.push(playerHitCard);
+    playerPoint = calculatePoints(playerHand)
+    player.append(newPlayerCard);
+    document.querySelector('#player-points').textContent = playerPoint;
+  }
+}
+
+//Player Stands
+function iStand(event){
+  let dealer = document.querySelector('#dealer-hand');
+  
+  if(dealerPoint < 17){
+    let dealerHitCard = deck.pop();
+    let newDealerCard = getCardImage(dealerHitCard);
+    dealerHand.push(dealerHitCard);
+    dealerPoint = calculatePoints(dealerHand);
+    dealer.append(newDealerCard);
+    document.querySelector('#dealer-points').textContent = dealerPoint;
+  }
+}
+
+//Shuffle Cards
+function shuffleDeck(deck) {
+  let currentIndex = deck.length, randomIndex;
+  
+  while (currentIndex != 0){
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    
+    [deck[currentIndex], deck[randomIndex]] = [deck[randomIndex], deck[currentIndex]];
+  }
+  return deck;
+}
 
 //Render Cards and Points
 function render(Array){
@@ -60,83 +134,6 @@ function buildDeck() {
   }
   deck = shuffleDeck(deck);
 }
-
-//Deals Cards
-function dealCards(event){
-  buildDeck();
-  playerHand = new Array();
-  dealerHand = new Array();
-
-  for (let i = 0; i < 2; i++){
-    let card = deck.pop();
-    playerHand.push(card);
-    for (let j = 0; j < 1; j++){
-      let card = deck.pop();
-      dealerHand.push(card);
-    }
-  }
-  render(playerHand);
-  render(dealerHand);
-  document.querySelector('#deal-button').disabled = true;
-}
-
-//Deals Hit Cards
-function hitMe(event){
-  let player = document.querySelector('#player-hand');
-  let dealer = document.querySelector('#dealer-hand');
-
-  if(dealerPoint < 17){
-    let playerHitCard = deck.pop();
-    let newPlayerCard = getCardImage(playerHitCard);
-    playerHand.push(playerHitCard);
-    playerPoint = calculatePoints(playerHand);
-    player.append(newPlayerCard);
-    document.querySelector('#player-points').textContent = playerPoint;
-
-    let dealerHitCard = deck.pop();
-    let newDealerCard = getCardImage(dealerHitCard);
-    dealerHand.push(dealerHitCard);
-    dealerPoint = calculatePoints(dealerHand);
-    dealer.append(newDealerCard);
-    document.querySelector('#dealer-points').textContent = dealerPoint;
-
-  } else {
-    let playerHitCard = deck.pop();
-    let newPlayerCard = getCardImage(playerHitCard);
-    playerHand.push(playerHitCard);
-    playerPoint = calculatePoints(playerHand)
-    player.append(newPlayerCard);
-    document.querySelector('#player-points').textContent = playerPoint;
-  }
-}
-
-//Player Stands
-function iStand(event){
-  let dealer = document.querySelector('#dealer-hand');
-
-  if(dealerPoint < 17){
-    let dealerHitCard = deck.pop();
-    let newDealerCard = getCardImage(dealerHitCard);
-    dealerHand.push(dealerHitCard);
-    dealerPoint = calculatePoints(dealerHand);
-    dealer.append(newDealerCard);
-    document.querySelector('#dealer-points').textContent = dealerPoint;
-  }
-}
-
-//Shuffle Cards
-function shuffleDeck(deck) {
-  let currentIndex = deck.length, randomIndex;
-
-  while (currentIndex != 0){
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [deck[currentIndex], deck[randomIndex]] = [deck[randomIndex], deck[currentIndex]];
-  }
-  return deck;
-}
-
 //End Game
 function gameOver(){
   
@@ -173,6 +170,7 @@ function gameOver(){
   document.querySelector('#messages').textContent = message;
 }
 
+//Restart Game
 function restart(){
   let player = document.querySelector('#player-hand');
   let dealer = document.querySelector('#dealer-hand');
